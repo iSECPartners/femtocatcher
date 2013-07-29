@@ -1,0 +1,25 @@
+# Annoying files
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+# For LaTeX docs
+*.aux
+*.cg
+*.idx
+*.ilg
+*.ind
+*.lltr
+*.loc
+*.lov
+*.lstr
+*.synctex.gz
+*.tdo
+*.toc
+*.tv
+status.log
+deliverable.log
+presentation.log
+deliverable.out
+status.out
+presentation.out

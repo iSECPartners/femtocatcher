@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView       
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/scroll" 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ <ImageView
+        android:id="@+id/isec_logo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:src="@drawable/iseclogo" />
+ 
+     <TextView
+         android:id="@+id/show_options"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:background="@color/red"
+         android:gravity="center_horizontal"
+         android:padding="20dp"
+         android:text=""
+         android:textAppearance="?android:attr/textAppearanceMedium"
+         android:textStyle="bold" />
+     
+     <TextView
+         android:id="@+id/show_options_info"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="20dp"
+         android:text=""
+         android:textAlignment="center"
+         android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    
+     <Button
+        android:id="@+id/airplane_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:onClick="goToSettings"/>
+
+</LinearLayout>
+</ScrollView>

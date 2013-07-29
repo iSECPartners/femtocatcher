@@ -1,0 +1,44 @@
+  <ScrollView       
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      android:id="@+id/scroll" 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+ <ImageView
+        android:id="@+id/isec_logo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:src="@drawable/iseclogo" />
+
+     <TextView
+         android:id="@+id/display_network_info"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="20dp"
+         android:text="Network Infomation"
+         android:textAppearance="?android:attr/textAppearanceMedium"/>
+     <TextView
+        android:id="@+id/get_cell_details"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="" />
+
+    
+     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Go Back"
+        android:onClick="goBack" />
+
+
+       </LinearLayout></ScrollView>
