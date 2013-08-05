@@ -30,6 +30,7 @@ public class MainActivity extends Activity{
 	private int FEMTO_NID_MIN = 0xfa;
 	private int FEMTO_NID_MAX = 0xff;
 	private Boolean ChangeAirplaneMode;
+	private TextView tv1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,6 +117,14 @@ public class MainActivity extends Activity{
 	
 	public void startTracking(){
         mTelephonyManager = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+        
+        /* Check if it is a CDMA phone */
+        if(mTelephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA){
+        	tv1 = (TextView) findViewById(R.id.err_msg);
+        	tv1.setText("This application can detect a femtocell on a CDMA phone only.");
+        	return;
+        }
+        
       	 mListener = new PhoneStateListener() {
     		 public void onServiceStateChanged(ServiceState s){
     			 Log.d(TAG, "Service State changed!");

@@ -86,11 +86,7 @@ public void getCellNetworkInfo(){
 			text1 = "";
 			Log.v(TAG, "getting cell network info");
 			int phoneType = mTelephonyManager.getPhoneType();
-			if(TelephonyManager.PHONE_TYPE_NONE == phoneType){
-				text1 = text1 + "\nNo CDMA Phone Network found";
-				tv1.setText(text1);
-				return;
-			}
+			
 			/* Check whether you are connected to a CDMA network */
 			if(TelephonyManager.PHONE_TYPE_CDMA == phoneType){
 				text1 = text1 + "Cell on CDMA Phone network";
@@ -98,6 +94,7 @@ public void getCellNetworkInfo(){
 			else{
 				text1 = text1 + "Cell is not on CDMA Phone network";
 				tv1.setText(text1);
+				return;
 			}
 			
 			/* Get the network type and name*/

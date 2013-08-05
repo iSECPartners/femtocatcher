@@ -20,16 +20,17 @@ public final class R {
     }
     public static final class id {
         public static final int airplane_result=0x7f080005;
-        public static final int chkDetect=0x7f080006;
-        public static final int display_general_info=0x7f080007;
-        public static final int display_network_info=0x7f08000c;
-        public static final int display_notice=0x7f08000b;
-        public static final int get_cell_details=0x7f080009;
-        public static final int get_radio_details=0x7f080008;
-        public static final int get_service_details=0x7f08000a;
+        public static final int chkDetect=0x7f080007;
+        public static final int display_general_info=0x7f080008;
+        public static final int display_network_info=0x7f08000d;
+        public static final int display_notice=0x7f08000c;
+        public static final int err_msg=0x7f080006;
+        public static final int get_cell_details=0x7f08000a;
+        public static final int get_radio_details=0x7f080009;
+        public static final int get_service_details=0x7f08000b;
         public static final int isec_logo=0x7f080002;
         public static final int main_layout=0x7f080001;
-        public static final int menu_settings=0x7f08000d;
+        public static final int menu_settings=0x7f08000e;
         public static final int scroll=0x7f080000;
         public static final int show_options=0x7f080003;
         public static final int show_options_info=0x7f080004;
