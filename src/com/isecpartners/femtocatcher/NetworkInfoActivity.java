@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class NetworkInfoActivity extends Activity{
+public class NetworkInfoActivity extends Activity {
 	private static final String TAG = "NetworkInfoActivity";
 	private TelephonyManager mTelephonyManager;
 	private PhoneStateListener mListener;
@@ -29,10 +29,9 @@ public class NetworkInfoActivity extends Activity{
 		tv2 = (TextView) findViewById(R.id.get_service_details);
 		
 		startTracking();
-		
 	}
 	
-	public void startTracking(){
+	public void startTracking() {
         mTelephonyManager = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
       	 mListener = new PhoneStateListener() {
     		 public void onCellLocationChanged(CellLocation location) {
@@ -48,8 +47,9 @@ public class NetworkInfoActivity extends Activity{
     	mTelephonyManager.listen(mListener, PhoneStateListener.LISTEN_CELL_LOCATION);
     	mTelephonyManager.listen(mListener, PhoneStateListener.LISTEN_SERVICE_STATE);
 	}
-	public void stopTracking(){
-		if(mListener!=null){
+	
+	public void stopTracking() {
+		if(mListener!=null) {
 			mTelephonyManager.listen(mListener, PhoneStateListener.LISTEN_NONE);
 			Log.v(TAG, "stopped tracking");
 		}
@@ -75,35 +75,32 @@ public class NetworkInfoActivity extends Activity{
 //		
 //	}
 	
-	public void goBack(View v){
+	public void goBack(View v) {
 		stopTracking();
 		finish();
-		
 	}
-public void getCellNetworkInfo(){
+	
+	public void getCellNetworkInfo() {
 		
-		if(mTelephonyManager != null){
+		if(mTelephonyManager != null) {
 			text1 = "";
 			Log.v(TAG, "getting cell network info");
 			int phoneType = mTelephonyManager.getPhoneType();
 			
 			/* Check whether you are connected to a CDMA network */
-			if(TelephonyManager.PHONE_TYPE_CDMA == phoneType){
+			if(TelephonyManager.PHONE_TYPE_CDMA == phoneType) {
 				text1 = text1 + "Cell on CDMA Phone network";
 			}
-			else{
+			else {
 				text1 = text1 + "Cell is not on CDMA Phone network";
 				tv1.setText(text1);
 				return;
 			}
 			
 			/* Get the network type and name*/
-			if(mTelephonyManager!=null){
+			if(mTelephonyManager!=null) {
 				int networkType = mTelephonyManager.getNetworkType();
 				text1 = text1 + "\nNetwork Type = " + MainActivity.getNetworkTypeName(networkType);
-				
-				
-				
 				
 				/* get network operator name */
 				String operatorName = mTelephonyManager.getNetworkOperatorName();
@@ -111,7 +108,7 @@ public void getCellNetworkInfo(){
 				
 				/* get CDMA cell location information */
 				CdmaCellLocation c = (CdmaCellLocation) mTelephonyManager.getCellLocation();
-				if(c!=null){
+				if(c!=null) {
 					text1 = text1 + "\nBaseStation ID: "+c.getBaseStationId();
 					text1 = text1 + "\nNetwork ID: "+c.getNetworkId();
 					text1 = text1 + "\nSystem ID: "+c.getSystemId();				
@@ -119,10 +116,8 @@ public void getCellNetworkInfo(){
 					text1 = text1 + "\nLongitude: "+c.getBaseStationLongitude();
 					
 					tv1.setText(text1);
-					
 				}
 			}
 		}
 	}
-
 }

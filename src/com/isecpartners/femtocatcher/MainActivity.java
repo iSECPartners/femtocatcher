@@ -34,6 +34,7 @@ public class MainActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		/* Check if the app can turn on airplane mode */
 		int api = android.os.Build.VERSION.SDK_INT;
 		if(api < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1 ){
@@ -52,8 +53,6 @@ public class MainActivity extends Activity{
 			TextView tv = (TextView) findViewById(R.id.display_notice);
 			tv.setText(s);
 			tv.setMovementMethod(LinkMovementMethod.getInstance());
-			
-			
 		}
 		
 	}
@@ -62,18 +61,17 @@ public class MainActivity extends Activity{
 		c.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
-			    {
-			    if (c.isChecked())
-			        {
-			        	Log.v(TAG, "start tracking");
-			        	startTracking();
+		    {
+			    if (c.isChecked()) {
+		        	Log.v(TAG, "start tracking");
+		        	startTracking();
 			        	
-			        }
-			    else{
+		        }
+			    else {
 					stopTracking();
 			    }
-			    }
-			});
+		    }
+		});
 	}
 	public void goToMainScreen(View v){
 		setContentView(R.layout.main_screen_1);
@@ -102,8 +100,6 @@ public class MainActivity extends Activity{
 			Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 			intent.putExtra("state", false);
 			sendBroadcast(intent);
-			
-			
 		}
 		
 		Intent myIntent = new Intent(MainActivity.this, DetectedFemtoActivity.class);
@@ -111,7 +107,6 @@ public class MainActivity extends Activity{
         b.putBoolean("ChangeAirplaneMode", ChangeAirplaneMode);
         myIntent.putExtras(b); 
         startActivity(myIntent);
-
 	}
 	
 	
@@ -119,13 +114,13 @@ public class MainActivity extends Activity{
         mTelephonyManager = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
         
         /* Check if it is a CDMA phone */
-        if(mTelephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA){
+        if(mTelephonyManager.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) {
         	tv1 = (TextView) findViewById(R.id.err_msg);
         	tv1.setText("This application can detect a femtocell on a CDMA phone only.");
         	return;
         }
         
-      	 mListener = new PhoneStateListener() {
+        mListener = new PhoneStateListener() {
     		 public void onServiceStateChanged(ServiceState s){
     			 Log.d(TAG, "Service State changed!");
     			 getServiceStateInfo(s);
@@ -135,15 +130,14 @@ public class MainActivity extends Activity{
     	mTelephonyManager.listen(mListener, PhoneStateListener.LISTEN_SERVICE_STATE);
 	}
 	public void stopTracking(){
-		if(mListener!=null){
+		if(mListener!=null) {
 			mTelephonyManager.listen(mListener, PhoneStateListener.LISTEN_NONE);
 			Log.v(TAG, "stopped tracking");
 		}
 	}
 	
 	public void getServiceStateInfo(ServiceState s) {
-		
-		if(s!= null && IsConnectedToCdmaFemto(s)){
+		if(s!= null && IsConnectedToCdmaFemto(s)) {
 			sendNotification();
 			toggleRadio();
 		}
@@ -151,7 +145,6 @@ public class MainActivity extends Activity{
 	}
 
 	private boolean IsConnectedToCdmaFemto(ServiceState s) {
-		
 		if (s == null){
 			return false;
 		}
@@ -171,56 +164,55 @@ public class MainActivity extends Activity{
 		/* If it is not an evDo network check the network ID range. 
 		 * If it is connected to femtocell, the nid should be lie between [0xfa, 0xff)
 		 */
-		if(!evDoNetwork){
+		if(!evDoNetwork) {
 			/* get network ID */
-			if(mTelephonyManager!=null){
+			if(mTelephonyManager!=null) {
 				CdmaCellLocation c = (CdmaCellLocation) mTelephonyManager.getCellLocation();
-				if(c!=null){
+				
+				if(c!=null) {
 					int networkID = c.getNetworkId();
-					if((networkID < FEMTO_NID_MIN) || (networkID >= FEMTO_NID_MAX)){
+					if((networkID < FEMTO_NID_MIN) || (networkID >= FEMTO_NID_MAX)) {
 						return false; 
 					}
-					else{
+					else {
 						return true;
 					}
 				
 				}
-				else{
+				else {
 					Log.v(TAG, "Cell location info is null.");
 					return false;
 				}
 			}
-			else{
+			else {
 				Log.v(TAG, "Telephony Manager is null.");
 				return false;
 			}
-
-			
 		}
 		
 		/* if it is an evDo network */
 		// TODO
 		else{
-			
 			/* get network ID */
-			if(mTelephonyManager!=null){
+			if(mTelephonyManager!=null) {
 				CdmaCellLocation c = (CdmaCellLocation) mTelephonyManager.getCellLocation();
-				if(c!=null){
+				
+				if(c!=null) {
 					int networkID = c.getNetworkId();
-					if((networkID < FEMTO_NID_MIN) || (networkID >= FEMTO_NID_MAX)){
+					
+					if((networkID < FEMTO_NID_MIN) || (networkID >= FEMTO_NID_MAX)) {
 						return false; 
 					}
-					else{
+					else {
 						return true;
 					}
-				
 				}
-				else{
+				else {
 					Log.v(TAG, "Cell location info is null.");
 					return false;
 				}
 			}
-			else{
+			else {
 				Log.v(TAG, "Telephony Manager is null.");
 				return false;
 			} 
@@ -230,48 +222,48 @@ public class MainActivity extends Activity{
 
 
 	public void sendNotification() {
+		
 		int mId = 0;
 		long pattern[] = {0, 1000, 1000};
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-	    .setSmallIcon(R.drawable.icon24)
-	    .setContentTitle("Detected Femtocell")
-	    .setVibrate(pattern)
-	    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-	    .setAutoCancel(true)
-	    .setContentText("Your device is connected to a femtocell.");
+		    .setSmallIcon(R.drawable.icon24)
+		    .setContentTitle("Detected Femtocell")
+		    .setVibrate(pattern)
+		    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+		    .setAutoCancel(true)
+		    .setContentText("Your device is connected to a femtocell.");
 		
-	NotificationCompat.InboxStyle inboxStyle =
-	        new NotificationCompat.InboxStyle();
-	String[] events = new String[6];
-
-	inboxStyle.setBigContentTitle("Your device is connected to a femtocell.");
-
-	for (int i=0; i < events.length; i++) {
-
-	    inboxStyle.addLine(events[i]);
-	}
-
-	mBuilder.setStyle(inboxStyle);
-
+		NotificationCompat.InboxStyle inboxStyle =
+		        new NotificationCompat.InboxStyle();
+		String[] events = new String[6];
+	
+		inboxStyle.setBigContentTitle("Your device is connected to a femtocell.");
+	
+		for (int i=0; i < events.length; i++) {
+	
+		    inboxStyle.addLine(events[i]);
+		}
+	
+		mBuilder.setStyle(inboxStyle);
+	
 		Intent resultIntent = new Intent(this, DetectedFemtoActivity.class);
-        Bundle b = new Bundle();
-        b.putBoolean("ChangeAirplaneMode", ChangeAirplaneMode);
-        resultIntent.putExtras(b); 
-
+	    Bundle b = new Bundle();
+	    b.putBoolean("ChangeAirplaneMode", ChangeAirplaneMode);
+	    resultIntent.putExtras(b); 
+	
 		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
+	
 		stackBuilder.addParentStack(DetectedFemtoActivity.class);
-
+	
 		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent =
-		        stackBuilder.getPendingIntent(
-		            0,
-		            PendingIntent.FLAG_UPDATE_CURRENT
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
+	            0,
+	            PendingIntent.FLAG_UPDATE_CURRENT
 		        );
 		mBuilder.setContentIntent(resultPendingIntent);
 		NotificationManager mNotificationManager =
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+	
 		mNotificationManager.notify(mId, mBuilder.build());
 		
 	}
@@ -279,13 +271,13 @@ public class MainActivity extends Activity{
 	private boolean isEvDoNetwork(int networkType) {
 		
 		if ((networkType == TelephonyManager.NETWORK_TYPE_EVDO_0) ||
-				(networkType == TelephonyManager.NETWORK_TYPE_EVDO_A) ||
-					(networkType == TelephonyManager.NETWORK_TYPE_EVDO_B)||
-						(networkType == TelephonyManager.NETWORK_TYPE_EHRPD)){
+			(networkType == TelephonyManager.NETWORK_TYPE_EVDO_A) ||
+			(networkType == TelephonyManager.NETWORK_TYPE_EVDO_B) ||
+			(networkType == TelephonyManager.NETWORK_TYPE_EHRPD)) {
 			return true;
 		}
 		
-			return false;
+		return false;
 		
 	}
 
