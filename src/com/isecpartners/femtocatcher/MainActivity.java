@@ -5,6 +5,7 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.provider.Settings.System;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -31,6 +32,7 @@ public class MainActivity extends Activity{
 	private int FEMTO_NID_MAX = 0xff;
 	private Boolean ChangeAirplaneMode;
 	private TextView tv1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,6 +91,7 @@ public class MainActivity extends Activity{
         startActivity(myIntent);
 	}
 	
+	@SuppressLint("InlinedApi")
 	public void toggleRadio(){
 		/* If you can change the airplane mode, turn on the airplane mode and let the user know */
 		if(ChangeAirplaneMode){
@@ -221,6 +224,8 @@ public class MainActivity extends Activity{
 	}
 
 
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
 	public void sendNotification() {
 		
 		int mId = 0;
@@ -251,15 +256,20 @@ public class MainActivity extends Activity{
 	    b.putBoolean("ChangeAirplaneMode", ChangeAirplaneMode);
 	    resultIntent.putExtras(b); 
 	
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-	
-		stackBuilder.addParentStack(DetectedFemtoActivity.class);
-	
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-	            0,
-	            PendingIntent.FLAG_UPDATE_CURRENT
-		        );
+	    PendingIntent resultPendingIntent;
+	    if(Integer.valueOf(android.os.Build.VERSION.SDK) >= android.os.Build.VERSION_CODES.HONEYCOMB)
+		{
+		    TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		
+			stackBuilder.addParentStack(DetectedFemtoActivity.class);
+		
+			stackBuilder.addNextIntent(resultIntent);
+			resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+		}
+	    else
+	    {
+	    	resultPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+	    }
 		mBuilder.setContentIntent(resultPendingIntent);
 		NotificationManager mNotificationManager =
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

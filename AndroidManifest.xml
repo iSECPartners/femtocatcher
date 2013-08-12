@@ -3,7 +3,8 @@
     package="com.isecpartners.femtocatcher"
     android:versionCode="1"
     android:versionName="1.0" >
-<!--   <uses-sdk android:minSdkVersion="5" android:maxSdkVersion="17"/> -->
+	<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="11"/>
+	
 
     <!--  Permissions for getting cell location -->
     <uses-permission
@@ -21,6 +22,9 @@
     
     <!--  permission for vibrating on femto detection -->
     <uses-permission android:name="android.permission.VIBRATE"/>
+	
+	<!-- permission for putting into airplane mode, if we can -->
+	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     
         
 		 
