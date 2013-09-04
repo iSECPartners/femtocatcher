@@ -31,9 +31,19 @@
      <CheckBox
         android:id="@+id/chkDetect"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/chk_detect"
+        android:checked="false" />
+     
+      <CheckBox
+        android:id="@+id/chk3g4g"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chk_3g4g"
         android:checked="false" />
      
       <Button

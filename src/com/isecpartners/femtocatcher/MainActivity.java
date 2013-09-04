@@ -12,6 +12,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
@@ -32,6 +33,12 @@ public class MainActivity extends Activity{
 	private int FEMTO_NID_MAX = 0xff;
 	private Boolean ChangeAirplaneMode;
 	private TextView tv1;
+    public static final String PREFS_NAME = "Settings";
+    private static final String DETECT_FEMTO = "detectFemto";
+    private static final String DETECT_3G4G = "detect3G4G";
+    private static final String SETTING = "Setting"; 
+    private static boolean startedTracking = false;
+    
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +52,28 @@ public class MainActivity extends Activity{
 			TextView tv = (TextView) findViewById(R.id.display_general_info);
 			tv.setMovementMethod(LinkMovementMethod.getInstance());
 			final CheckBox c = (CheckBox) findViewById(R.id.chkDetect);
-			getUserChoice(c);
+			final CheckBox c1 = (CheckBox) findViewById(R.id.chk3g4g);
+			
+			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			if(settings.getBoolean(DETECT_3G4G, false)){
+				c1.setChecked(true);
+				if(startedTracking == false){
+					startTracking();
+					startedTracking = true;
+				}
+				
+			}
+			if(settings.getBoolean(DETECT_FEMTO, false) && startedTracking == false){
+				c.setChecked(true);
+				if(startedTracking == false){
+					startTracking();
+					startedTracking = true;
+				}
+				
+			}
+			
+			getFemtoDetectionChoice(c);
+			getDetect3G4GChoice(c1);
 		}
 		else{
 			ChangeAirplaneMode = false;
@@ -59,31 +87,113 @@ public class MainActivity extends Activity{
 		
 	}
 	
-	public void getUserChoice(final CheckBox c){
+	private void getDetect3G4GChoice(final CheckBox c1) {
+		c1.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+		    {
+				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+				 SharedPreferences.Editor editor = settings.edit();
+
+			    if (c1.isChecked()) {
+		        	Log.v(TAG, "start tracking");
+				    editor.putBoolean(DETECT_3G4G, true);
+				    if(startedTracking == false){
+				    	startedTracking = true;
+					    Log.v(TAG, "startedTracking: "+startedTracking);
+				    	Log.v(TAG, "starting listener to detect 3g4g");
+				    	startTracking();
+				    }
+
+			        	
+		        }
+			    else {
+			    	editor.putBoolean(DETECT_3G4G, false);
+			    	if(!settings.getBoolean(DETECT_FEMTO, false)){
+			    		stopTracking();
+			    		startedTracking = false;
+			    	}
+			    		
+			    }
+			    editor.commit();
+			    printSharedPrefs();
+		    }
+		});
+		
+	}
+
+	public void getFemtoDetectionChoice(final CheckBox c){
 		c.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 		    {
+				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+				 SharedPreferences.Editor editor = settings.edit();
+
 			    if (c.isChecked()) {
 		        	Log.v(TAG, "start tracking");
-		        	startTracking();
-			        	
+				    editor.putBoolean(DETECT_FEMTO, true);
+				    if(startedTracking == false){
+				    	startedTracking = true;
+				        startTracking();
+				    }
+				    	
 		        }
 			    else {
-					stopTracking();
+			    	editor.putBoolean(DETECT_FEMTO, false);
+			    	printSharedPrefs();
+			    	if(!settings.getBoolean(DETECT_3G4G, false)){
+			    		stopTracking();
+			    		startedTracking = false;
+			    	}
+					
 			    }
+			    editor.commit();
+			    printSharedPrefs();
 		    }
+
+
 		});
+	}
+	
+	
+	
+	// TODO remove this
+	private void printSharedPrefs() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		Log.v(TAG, "detectFemto: "+ settings.getBoolean(DETECT_FEMTO, false) + " detect3G4G : "+ settings.getBoolean(DETECT_3G4G, false));
+		
 	}
 	public void goToMainScreen(View v){
 		setContentView(R.layout.main_screen_1);
 		final CheckBox c = (CheckBox) findViewById(R.id.chkDetect);
 		c.setText("Notify on Femtocells");
+		final CheckBox c1 = (CheckBox) findViewById(R.id.chk3g4g);
+		
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		if(settings.getBoolean(DETECT_3G4G, false)){
+			c1.setChecked(true);
+			if(startedTracking == false){
+				startTracking();
+				startedTracking = true;
+			}
+		}
+		if(settings.getBoolean(DETECT_FEMTO, false)){
+			c.setChecked(true);
+			if(startedTracking == false){
+				startTracking();
+				startedTracking = true;
+			}
+		}
+		
 		
 		TextView tv = (TextView) findViewById(R.id.display_general_info);
 		tv.setText(R.string.non_airplane_mode);
 		tv.setMovementMethod(LinkMovementMethod.getInstance());
-		getUserChoice(c);
+		getFemtoDetectionChoice(c);
+		getDetect3G4GChoice(c1);
+		
+		
 	}
 	
 	public void getNetworkInfo(View v){
@@ -92,13 +202,11 @@ public class MainActivity extends Activity{
 	}
 	
 	@SuppressLint("InlinedApi")
-	public void toggleRadio(){
+	public void toggleRadio(String setting){
 		/* If you can change the airplane mode, turn on the airplane mode and let the user know */
 		if(ChangeAirplaneMode){
 			
 			System.putLong(getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 1);
-			long isEnabled = System.getLong(getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, -1);
-			Log.v(TAG, "airplane mode now is: "+isEnabled);
 
 			Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 			intent.putExtra("state", false);
@@ -108,6 +216,12 @@ public class MainActivity extends Activity{
 		Intent myIntent = new Intent(MainActivity.this, DetectedFemtoActivity.class);
         Bundle b = new Bundle();
         b.putBoolean("ChangeAirplaneMode", ChangeAirplaneMode);
+        if(setting.equalsIgnoreCase(DETECT_3G4G)){
+	    	b.putString(SETTING, DETECT_3G4G);
+	    }
+	    else{
+	    	b.putString(SETTING, DETECT_FEMTO);
+	    }
         myIntent.putExtras(b); 
         startActivity(myIntent);
 	}
@@ -125,7 +239,7 @@ public class MainActivity extends Activity{
         
         mListener = new PhoneStateListener() {
     		 public void onServiceStateChanged(ServiceState s){
-    			 Log.d(TAG, "Service State changed!");
+    			 Log.v(TAG, "Service State changed!");
     			 getServiceStateInfo(s);
     		 }
     	};
@@ -140,11 +254,36 @@ public class MainActivity extends Activity{
 	}
 	
 	public void getServiceStateInfo(ServiceState s) {
-		if(s!= null && IsConnectedToCdmaFemto(s)) {
-			sendNotification();
-			toggleRadio();
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+				
+		if(settings.getBoolean(DETECT_FEMTO, false) && s!= null && IsConnectedToCdmaFemto(s)) {
+			sendNotification(DETECT_FEMTO);
+			toggleRadio(DETECT_FEMTO);
 		}
 		
+		if(settings.getBoolean(DETECT_3G4G, false) && s!= null && !IsConnectedTo3G4G()) {
+			sendNotification(DETECT_3G4G);
+			toggleRadio(DETECT_3G4G);
+		}
+		
+		
+		
+	}
+
+	@SuppressLint("InlinedApi")
+	private boolean IsConnectedTo3G4G() {
+		long isAirplaneModeEnabled = System.getLong(getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, -1);
+		if(isAirplaneModeEnabled == 1){
+			return true;
+		}
+		if((mTelephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_0) || 
+				(mTelephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_A) ||
+					(mTelephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_EVDO_B) ||
+						(mTelephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_EHRPD) ||
+							(mTelephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_LTE)){
+			return true;
+		}
+		return false;
 	}
 
 	private boolean IsConnectedToCdmaFemto(ServiceState s) {
@@ -226,10 +365,12 @@ public class MainActivity extends Activity{
 
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
-	public void sendNotification() {
+	public void sendNotification(String setting) {
+		
 		
 		int mId = 0;
 		long pattern[] = {0, 1000, 1000};
+		
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
 		    .setSmallIcon(R.drawable.icon24)
 		    .setContentTitle("Detected Femtocell")
@@ -238,12 +379,20 @@ public class MainActivity extends Activity{
 		    .setAutoCancel(true)
 		    .setContentText("Your device is connected to a femtocell.");
 		
+		if(setting.equalsIgnoreCase(DETECT_3G4G)){
+			mBuilder.setContentTitle("No 3G or 4G network");
+			mBuilder.setContentText("Your device is not connected to a 3G or a 4G network.");
+		}
 		NotificationCompat.InboxStyle inboxStyle =
 		        new NotificationCompat.InboxStyle();
 		String[] events = new String[6];
 	
 		inboxStyle.setBigContentTitle("Your device is connected to a femtocell.");
-	
+		
+		if(setting.equalsIgnoreCase(DETECT_3G4G)){
+			inboxStyle.setBigContentTitle("Your device is not connected to a 3G or a 4G network.");
+		}
+		
 		for (int i=0; i < events.length; i++) {
 	
 		    inboxStyle.addLine(events[i]);
@@ -254,6 +403,13 @@ public class MainActivity extends Activity{
 		Intent resultIntent = new Intent(this, DetectedFemtoActivity.class);
 	    Bundle b = new Bundle();
 	    b.putBoolean("ChangeAirplaneMode", ChangeAirplaneMode);
+	    if(setting.equalsIgnoreCase(DETECT_3G4G)){
+	    	b.putString(SETTING, DETECT_3G4G);
+	    }
+	    else{
+	    	b.putString(SETTING, DETECT_FEMTO);
+	    }
+	    
 	    resultIntent.putExtras(b); 
 	
 	    PendingIntent resultPendingIntent;

@@ -5,13 +5,16 @@
     <string name="network_string">Press the button below to access the cell network information</string>
     <string name="menu_settings">Settings</string>
     <string name="airplane_mode_already_on">Detected femtocell and Airplane Mode is now on.</string>
+    <string name="airplane_mode_3g4g_already_on">Not connected to 3G or 4G network and Airplane Mode is now on.</string>
     <string name="airplane_mode_manually_on">Detected femtocell!</string>
+    <string name="airplane_mode_3g4g_manually_on">Not connected to 3G or 4G network!</string>
     <string name="airplane_mode_more_info">Click the button below to manually turn on Airplane mode.</string>
     <string name="button_getnetworkinfo">View Network Info</string>
     <string name="button_stoptracking">Stop Tracking Network Info</string>
     <string name="button_RadioOff">Yes</string>
     <string name="button_RadioOn">No</string>
     <string name="chk_detect">Block Femtocells</string>
+    <string name="chk_3g4g">Disable radio when the device is not connected to 3G or 4G.</string>
     <string name="airplane_mode">iSEC’s Femtocatcher uses the network identifier to detect if you are attached to a femtocell, and if so, places you into Airplane mode.\nIf you exit Airplane Mode, and are still connected to a femtocell – Airplane Mode will be re-enabled, as long as the ‘Block Femtocells’ box is checked.\nIt cannot protect you if the cellular tower lies about its identifier.\nThis Femtocatcher is Open Source, and is located on <a href="https://github.com/iSECPartners/femtocatcher">Github</a>.\n</string>
     <string name="non_airplane_mode">iSEC’s Femtocatcher uses the network identifier to detect if you are attached to a femtocell, and if so, will notify you.\nIt cannot protect you if the cellular tower lies about its identifier.\nThis Femtocatcher is Open Source, and is located on <a href="https://github.com/iSECPartners/femtocatcher">Github</a>.\n</string>
     <color name="red">#c01220</color>

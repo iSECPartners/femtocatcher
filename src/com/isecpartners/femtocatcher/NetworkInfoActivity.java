@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.telephony.CellLocation;
 import android.telephony.PhoneStateListener;
-import android.telephony.ServiceState;
 import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.util.Log;
@@ -13,20 +12,20 @@ import android.view.View;
 import android.widget.TextView;
 
 public class NetworkInfoActivity extends Activity {
-	private static final String TAG = "NetworkInfoActivity";
+	private static final String TAG = "FemtoNetworkInfoActivity";
 	private TelephonyManager mTelephonyManager;
 	private PhoneStateListener mListener;
-	private String text;
+//	private String text;
 	private String text1;
-	private TextView tv0;
+//	private TextView tv0;
 	private TextView tv1;
-	private TextView tv2;
+//	private TextView tv2;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.network_info_layout);
 		tv1 = (TextView) findViewById(R.id.get_cell_details);
-		tv2 = (TextView) findViewById(R.id.get_service_details);
+//		tv2 = (TextView) findViewById(R.id.get_service_details);
 		
 		startTracking();
 	}

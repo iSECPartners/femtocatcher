@@ -20,17 +20,18 @@ public final class R {
     }
     public static final class id {
         public static final int airplane_result=0x7f080005;
+        public static final int chk3g4g=0x7f080008;
         public static final int chkDetect=0x7f080007;
-        public static final int display_general_info=0x7f080008;
-        public static final int display_network_info=0x7f08000d;
-        public static final int display_notice=0x7f08000c;
+        public static final int display_general_info=0x7f080009;
+        public static final int display_network_info=0x7f08000e;
+        public static final int display_notice=0x7f08000d;
         public static final int err_msg=0x7f080006;
-        public static final int get_cell_details=0x7f08000a;
-        public static final int get_radio_details=0x7f080009;
-        public static final int get_service_details=0x7f08000b;
+        public static final int get_cell_details=0x7f08000b;
+        public static final int get_radio_details=0x7f08000a;
+        public static final int get_service_details=0x7f08000c;
         public static final int isec_logo=0x7f080002;
         public static final int main_layout=0x7f080001;
-        public static final int menu_settings=0x7f08000e;
+        public static final int menu_settings=0x7f08000f;
         public static final int scroll=0x7f080000;
         public static final int show_options=0x7f080003;
         public static final int show_options_info=0x7f080004;
@@ -45,19 +46,22 @@ public final class R {
         public static final int activity_main=0x7f070000;
     }
     public static final class string {
-        public static final int airplane_mode=0x7f04000b;
+        public static final int airplane_mode=0x7f04000e;
+        public static final int airplane_mode_3g4g_already_on=0x7f040004;
+        public static final int airplane_mode_3g4g_manually_on=0x7f040006;
         public static final int airplane_mode_already_on=0x7f040003;
-        public static final int airplane_mode_manually_on=0x7f040004;
-        public static final int airplane_mode_more_info=0x7f040005;
+        public static final int airplane_mode_manually_on=0x7f040005;
+        public static final int airplane_mode_more_info=0x7f040007;
         public static final int app_name=0x7f040000;
-        public static final int button_RadioOff=0x7f040008;
-        public static final int button_RadioOn=0x7f040009;
-        public static final int button_getnetworkinfo=0x7f040006;
-        public static final int button_stoptracking=0x7f040007;
-        public static final int chk_detect=0x7f04000a;
+        public static final int button_RadioOff=0x7f04000a;
+        public static final int button_RadioOn=0x7f04000b;
+        public static final int button_getnetworkinfo=0x7f040008;
+        public static final int button_stoptracking=0x7f040009;
+        public static final int chk_3g4g=0x7f04000d;
+        public static final int chk_detect=0x7f04000c;
         public static final int menu_settings=0x7f040002;
         public static final int network_string=0x7f040001;
-        public static final int non_airplane_mode=0x7f04000c;
+        public static final int non_airplane_mode=0x7f04000f;
     }
     public static final class style {
         /** 
